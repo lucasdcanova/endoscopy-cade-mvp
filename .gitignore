@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.env*
+!.env.example
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Datasets — NEVER commit a frame or a video
+data/raw/
+data/proprietary/
+data/manifests/*.jsonl
+!data/manifests/.gitkeep
+data/kvasir-seg/
+
+# Model artifacts
+*.pt
+*.onnx
+*.engine
+weights/
+
+# Eval reports — write locally, do not commit unless explicitly chosen
+reports/
+!reports/.gitkeep
+
+# Notebooks: keep the file, drop the outputs
+notebooks/.ipynb_checkpoints/
