@@ -47,6 +47,46 @@ endoscopy-cade-mvp/
 
 ## Quick start
 
+### Run the metric tests (no GPU, no dataset)
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+pytest tests/
+```
+
+### Reproduce the Kvasir-SEG baseline end-to-end (GPU required)
+```bash
+# 1. Install with the YOLO extras
+pip install -e ".[dev,yolo,torch]"
+
+# 2. Download Kvasir-SEG (research license, Simula)
+bash scripts/download_kvasir_seg.sh data/kvasir-seg
+
+# 3. Build the manifest (deterministic train/val/test split)
+python scripts/build_kvasir_manifest.py \
+    --root data/kvasir-seg \
+    --out  data/manifests/kvasir-seg.jsonl
+
+# 4. Fine-tune YOLOv8n-seg
+python scripts/train_kvasir_baseline.py \
+    --manifest data/manifests/kvasir-seg.jsonl \
+    --epochs 80 \
+    --batch 16 \
+    --device cuda:0 \
+    --out-weights weights/yolov8n-seg-kvasir.pt
+
+# 5. Score on the held-out test split
+python scripts/eval_kvasir_baseline.py \
+    --manifest data/manifests/kvasir-seg.jsonl \
+    --weights  weights/yolov8n-seg-kvasir.pt \
+    --split test \
+    --out reports/kvasir_seg_test.json
+```
+
+The eval emits **per-frame sensitivity / specificity / F1 / balanced accuracy** AND **mask Dice / IoU (mean + micro)** in a single JSON + Markdown report. The README target "Polyp Dice ≥ 0.80" becomes mechanically falsifiable when step 5 finishes.
+
+## Manual quick start
+
 ```bash
 # Python 3.11+
 python -m venv .venv && source .venv/bin/activate

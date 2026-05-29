@@ -6,13 +6,9 @@ can tell what was promised and whether it shipped.
 ## 30 days (by 2026-06-27)
 
 - [x] Public scaffold (this commit)
-- [ ] Kvasir-SEG loader + manifest schema with 100% test coverage
-- [ ] Pretrained YOLOv8n-seg baseline running end-to-end against
-      the Kvasir-SEG public test split
-- [ ] First eval report committed to `reports/` with:
-  - Polyp Dice
-  - Per-frame sensitivity + specificity
-  - Per-clip lead time (synthetic — proprietary clips not yet IRB-cleared)
+- [x] Kvasir-SEG loader + manifest schema with test coverage (`src/cade/data/kvasir_seg.py` + `tests/test_manifest.py`)
+- [~] Pretrained YOLOv8n-seg baseline pipeline scripted (`scripts/train_kvasir_baseline.py` + `scripts/eval_kvasir_baseline.py`). Awaiting GPU run; download script at `scripts/download_kvasir_seg.sh`.
+- [~] First eval report layout finalised (`reports/<run>.json` + `<run>.md`). Metric layer ships Dice + IoU + sens + spec + balanced accuracy + p50/p95 latency. Awaiting first real GPU run.
 - [ ] `notebooks/01_eda_kvasir.ipynb` — exploratory data analysis
 - [ ] Single-page write-up (`docs/baseline-report.md`) explaining the
       result honestly: what worked, what didn't, what the next experiment is
